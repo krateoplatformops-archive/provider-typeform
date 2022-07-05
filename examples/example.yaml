@@ -1,0 +1,86 @@
+apiVersion: typeform.krateo.io/v1alpha1
+kind: Form
+metadata:
+  name: provider-typeform-example
+  labels:
+    deploymentId: 62bdb86c502c2e33eb46a315
+spec:
+  forProvider:
+    title: Form di esempio
+    fields:
+      - type: rating
+        title: In generale, che valutazione complessiva dai all'evento?
+        properties:
+          shape: heart
+          steps: 5
+        validations:
+          required: true
+
+      - type: rating
+        title: Livello di esposizione degli speaker?
+        properties:
+          shape: star
+          steps: 5
+        validations:
+          required: true
+
+      - type: rating
+        title: Completezza degli argomenti trattati
+        properties:
+          shape: star
+          steps: 5
+        validations:
+          required: true
+
+      - type: rating
+        title: Durata dell'evento
+        properties:
+          shape: star
+          steps: 5
+        validations:
+          required: true
+
+      - type: rating
+        title: Che voto daresti alla soluzione Krateo PlatformOps?
+        properties:
+          shape: star
+          steps: 5
+        validations:
+          required: true
+          
+      - type: long_text
+        title: Quali sono le feature di Krateo PlatformOps che ti sono piaciute di più/che pensi possano essere più utili?
+        validations:
+          maxLength: 300
+      
+      - type: long_text
+        title: Ci sono delle funzionalità "desiderata" che aggiungeresti?
+        validations:
+          maxLength: 300
+
+      - type: multiple_choice
+        title: Quali sono gli aspetti che si sono dimostrati per lei più interessanti durante l'evento?
+        properties:
+          description: (possibilità di scelta multipla)
+          allowOtherChoice: true
+          choices: ['Uno', 'Due', 'Tre']
+        validations:
+          required: true
+          minSelection: 1
+          maxSelection: 3
+      
+      - type: multiple_choice
+        title: Vorresti essere ricontattato da noi per un colloquio approfondito e personalizzato per approfondire Krateo?
+        properties:
+          description: (possibilità di scelta multipla)
+          allowOtherChoice: true
+          choices: 
+            - 'Sì, entro i prossimi 3 mesi'
+            - 'Sì, entro i prossimi 6 mesi'
+            - 'Sì, entro i prossimi 12 mesi'
+            - 'No, non mi interessa'
+        validations:
+          required: true
+      
+  providerConfigRef:
+    name: provider-typeform-config

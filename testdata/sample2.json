@@ -1,0 +1,38 @@
+{
+    "fields": [
+        {
+            "properties": {
+                "alphabetical_order": true,
+                "choices": [
+                    {
+                        "label": "AAA"
+                    },
+                    {
+                        "label": "BBB"
+                    },
+                    {
+                        "label": "CCC"
+                    }
+                ],
+                "description": "Fai la tua scelta!"
+            },
+            "title": "fai-la-tua-scelta",
+            "type": "dropdown"
+        },
+        {
+            "properties": {
+                "labels": [
+                    {
+                        "left": "Il tuo gradimento?"
+                    }
+                ],
+                "start_at_one": true,
+                "steps": 10
+            },
+            "title": "il-tuo-gradimento",
+            "type": "opinion_scale"
+        }
+    ],
+    "title": "Sample Form",
+    "type": "form"
+}

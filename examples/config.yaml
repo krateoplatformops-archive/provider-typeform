@@ -1,0 +1,13 @@
+apiVersion: typeform.krateo.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  name: provider-typeform-config
+spec:
+  #logServiceUrl: http://deployment.krateoplatformops.io/
+  verbose: false
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: default
+      name: typeform.com-secret
+      key: token
