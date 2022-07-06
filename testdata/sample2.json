@@ -1,38 +1,119 @@
 {
-    "fields": [
+    "id": "dezzD5Cw",
+    "type": "quiz",
+    "title": "My typeform",
+    "workspace": {
+        "href": "https://api.typeform.com/workspaces/Z2YAsZ"
+    },
+    "theme": {
+        "href": "https://api.typeform.com/themes/qHWOQ7"
+    },
+    "settings": {
+        "language": "en",
+        "progress_bar": "proportion",
+        "meta": {
+            "allow_indexing": false
+        },
+        "hide_navigation": false,
+        "is_public": false,
+        "is_trial": false,
+        "show_progress_bar": true,
+        "show_typeform_branding": true,
+        "are_uploads_public": false,
+        "show_time_to_complete": true,
+        "show_number_of_submissions": false,
+        "show_cookie_consent": false,
+        "show_question_number": true,
+        "pro_subdomain_enabled": false,
+        "capabilities": {
+            "e2e_encryption": {
+                "enabled": false,
+                "modifiable": true
+            }
+        }
+    },
+    "thankyou_screens": [
         {
+            "id": "jgC2ukCkbjUt",
+            "ref": "01G77GST50TF1E2B82PHV0QRAB",
+            "title": "",
+            "type": "thankyou_screen",
             "properties": {
-                "alphabetical_order": true,
-                "choices": [
-                    {
-                        "label": "AAA"
-                    },
-                    {
-                        "label": "BBB"
-                    },
-                    {
-                        "label": "CCC"
-                    }
-                ],
-                "description": "Fai la tua scelta!"
-            },
-            "title": "fai-la-tua-scelta",
-            "type": "dropdown"
+                "show_button": true,
+                "share_icons": true,
+                "button_mode": "default_redirect",
+                "button_text": "Create a typeform"
+            }
         },
         {
+            "id": "DefaultTyScreen",
+            "ref": "default_tys",
+            "title": "Thanks for completing this typeform\nNow *create your own* — it's free, easy, \u0026 beautiful",
+            "type": "thankyou_screen",
             "properties": {
-                "labels": [
-                    {
-                        "left": "Il tuo gradimento?"
-                    }
-                ],
-                "start_at_one": true,
-                "steps": 10
+                "show_button": true,
+                "share_icons": false,
+                "button_mode": "default_redirect",
+                "button_text": "Create a *typeform*"
             },
-            "title": "il-tuo-gradimento",
-            "type": "opinion_scale"
+            "attachment": {
+                "type": "image",
+                "href": "https: //images.typeform.com/images/2dpnUBBkz2VN"
+            }
         }
     ],
-    "title": "Sample Form",
-    "type": "form"
+    "fields": [
+        {
+            "id": "Ozt07dHL3SXi",
+            "title": "Hello, what's your name?",
+            "ref": "01G77GST4J9HBR0S8KCDC20B9A",
+            "validations": {
+                "required": false
+            },
+            "type": "short_text",
+            "attachment": {
+                "type": "image",
+                "href": "https://images.typeform.com/images/WMALzu59xbXQ"
+            },
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/WMALzu59xbXQ"
+                }
+            }
+        },
+        {
+            "id": "kboZYQjNnPYd",
+            "title": "Nice to meet you, {{field:01G77GST4J9HBR0S8KCDC20B9A}}, how is your day going?",
+            "ref": "01G77GST504EWKQ7EJX5SAEVWM",
+            "properties": {
+                "randomize": false,
+                "allow_multiple_selection": false,
+                "allow_other_choice": false,
+                "vertical_alignment": true,
+                "choices": [
+                    {
+                        "id": "jcDQthYBkTcW",
+                        "ref": "01G77GST50WPCHXVMPJ4NMB0YP",
+                        "label": "Terrific!"
+                    },
+                    {
+                        "id": "2RZWLPQEfoaX",
+                        "ref": "01G77GST50JCXV8NXMVTQ6EEYH",
+                        "label": "Not so well..."
+                    }
+                ]
+            },
+            "validations": {
+                "required": false
+            },
+            "type": "multiple_choice"
+        }
+    ],
+    "created_at": "2022-07-05T15: 48: 58+00: 00",
+    "last_updated_at": "2022-07-05T15: 49: 14+00: 00",
+    "_links": {
+        "display": "https: //94rggqvqecq.typeform.com/to/dezzD5Cw"
+    }
 }

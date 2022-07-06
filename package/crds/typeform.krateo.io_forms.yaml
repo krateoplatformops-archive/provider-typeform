@@ -75,6 +75,37 @@ spec:
                     items:
                       description: Field describe a form widget.
                       properties:
+                        layout:
+                          description: 'Layout: allows you to position attachment.'
+                          properties:
+                            attachment:
+                              description: Attachment allows you to display images
+                                and videos. Available for welcome and thank you screens,
+                                as well as all fields.
+                              properties:
+                                href:
+                                  description: URL for the image or video you want
+                                    to display. Images must already exist in your
+                                    account
+                                  type: string
+                                scale:
+                                  description: 'Optional parameter for responsively
+                                    scaling videos. Valid values: 0.4, 0.6, 0.8, 1'
+                                  type: integer
+                                type:
+                                  description: 'Type of attachment. Valid values:
+                                    image, video'
+                                  type: string
+                              type: object
+                            placement:
+                              description: 'Position of media for split and float
+                                layouts. Valid values: left, right.'
+                              type: string
+                            type:
+                              description: 'Type of layout. Valid values: split, wallpaper,
+                                float.'
+                              type: string
+                          type: object
                         properties:
                           description: 'Properties: specific properties for this field.'
                           properties:

@@ -11,15 +11,21 @@ spec:
       - type: rating
         title: In generale, che valutazione complessiva dai all'evento?
         properties:
-          shape: heart
+          shape: star
           steps: 5
         validations:
           required: true
+        layout:
+          type: split
+          placement: left
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/teHQUBBA4TDX
 
       - type: rating
         title: Livello di esposizione degli speaker?
         properties:
-          shape: star
+          shape: heart
           steps: 5
         validations:
           required: true
@@ -27,7 +33,7 @@ spec:
       - type: rating
         title: Completezza degli argomenti trattati
         properties:
-          shape: star
+          shape: crown
           steps: 5
         validations:
           required: true
@@ -35,7 +41,7 @@ spec:
       - type: rating
         title: Durata dell'evento
         properties:
-          shape: star
+          shape: tick
           steps: 5
         validations:
           required: true
@@ -43,7 +49,7 @@ spec:
       - type: rating
         title: Che voto daresti alla soluzione Krateo PlatformOps?
         properties:
-          shape: star
+          shape: up
           steps: 5
         validations:
           required: true

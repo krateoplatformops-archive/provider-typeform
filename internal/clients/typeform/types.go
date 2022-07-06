@@ -3,9 +3,12 @@ package typeform
 import "strings"
 
 type Form struct {
-	ID     string  `json:"id,omitempty"`
-	Title  string  `json:"title"`
-	Type   string  `json:"type"`
+	ID    string `json:"id,omitempty"`
+	Title string `json:"title"`
+	Type  string `json:"type"`
+	Theme *struct {
+		Href string `json:"href"`
+	} `json:"theme,omitempty"`
 	Fields []Field `json:"fields,omitempty"`
 	Links  *struct {
 		Display string `json:"display"`
@@ -16,8 +19,10 @@ type Field struct {
 	ID          string       `json:"id,omitempty"`
 	Type        string       `json:"type"`
 	Title       string       `json:"title"`
+	Ref         string       `json:"ref,omitempty"`
 	Properties  Properties   `json:"properties,omitempty"`
 	Validations *Validations `json:"validations,omitempty"`
+	Layout      *Layout      `json:"layout,omitempty"`
 }
 
 type Properties struct {
@@ -52,6 +57,18 @@ type Validations struct {
 	MinSelection *int  `json:"min_selection,omitempty"`
 	MinValue     *int  `json:"min_value,omitempty"`
 	Required     *bool `json:"required,omitempty"`
+}
+
+type Attachment struct {
+	Href  string `json:"href,omitempty"`
+	Type  string `json:"type,omitempty"`
+	Scale *int   `json:"scale,omitempty"`
+}
+
+type Layout struct {
+	Attachment Attachment `json:"attachment,omitempty"`
+	Placement  string     `json:"placement,omitempty"`
+	Type       string     `json:"type,omitempty"`
 }
 
 type Errors struct {

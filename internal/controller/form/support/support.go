@@ -1,6 +1,9 @@
 package support
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
@@ -27,8 +30,8 @@ func IsUpToDate(log logging.Logger, in *v1alpha1.FormParams, observed *typeform.
 
 			return *a == *b
 		}),
-		cmpopts.SortSlices(func(a, b v1alpha1.Field) bool {
-			return a.Type < b.Type
+		cmpopts.SortSlices(func(a, b typeform.Field) bool {
+			return a.Ref < b.Ref
 		}),
 		cmpopts.SortSlices(func(a, b string) bool {
 			return a < b
@@ -38,6 +41,7 @@ func IsUpToDate(log logging.Logger, in *v1alpha1.FormParams, observed *typeform.
 	))
 
 	if diff != "" {
+		fmt.Printf("\n\n%s\n\n", diff)
 		log.Info("IsUpToDate", "Diff", diff)
 		return false, nil
 	}
@@ -74,6 +78,16 @@ func ToFormParameters(in *typeform.Form) *v1alpha1.FormParams {
 			res.Fields[i].Validations.MinSelection = el.Validations.MinSelection
 			res.Fields[i].Validations.Required = helpers.LateInitializeBool(el.Validations.Required, false)
 		}
+
+		if el.Layout != nil {
+			res.Fields[i].Layout = &v1alpha1.Layout{}
+			res.Fields[i].Layout.Type = el.Layout.Type
+			res.Fields[i].Layout.Placement = el.Layout.Placement
+			res.Fields[i].Layout.Attachment = v1alpha1.Attachment{}
+			res.Fields[i].Layout.Attachment.Href = el.Layout.Attachment.Href
+			res.Fields[i].Layout.Attachment.Type = el.Layout.Attachment.Type
+			res.Fields[i].Layout.Attachment.Scale = el.Layout.Attachment.Scale
+		}
 	}
 
 	return res
@@ -86,9 +100,15 @@ func FromFormParams(in *v1alpha1.FormParams) *typeform.Form {
 		Fields: make([]typeform.Field, len(in.Fields)),
 	}
 
+	counters := map[string]int{}
+
 	for i, el := range in.Fields {
+		n := counters[el.Type]
+		counters[el.Type] = n + 1
+
 		res.Fields[i].Type = el.Type
 		res.Fields[i].Title = el.Title
+		res.Fields[i].Ref = fmt.Sprintf("%s-%d", strings.ReplaceAll(el.Type, "_", "-"), counters[el.Type])
 
 		res.Fields[i].Properties.AllowMultipleSelection = el.Properties.AllowMultipleSelection
 		res.Fields[i].Properties.AllowOtherChoice = el.Properties.AllowOtherChoice
@@ -107,6 +127,16 @@ func FromFormParams(in *v1alpha1.FormParams) *typeform.Form {
 			res.Fields[i].Validations.MaxSelection = el.Validations.MaxSelection
 			res.Fields[i].Validations.MinSelection = el.Validations.MinSelection
 			res.Fields[i].Validations.Required = el.Validations.Required
+		}
+
+		if el.Layout != nil {
+			res.Fields[i].Layout = &typeform.Layout{}
+			res.Fields[i].Layout.Type = el.Layout.Type
+			res.Fields[i].Layout.Placement = el.Layout.Placement
+			res.Fields[i].Layout.Attachment = typeform.Attachment{}
+			res.Fields[i].Layout.Attachment.Href = el.Layout.Attachment.Href
+			res.Fields[i].Layout.Attachment.Type = el.Layout.Attachment.Type
+			res.Fields[i].Layout.Attachment.Scale = el.Layout.Attachment.Scale
 		}
 	}
 

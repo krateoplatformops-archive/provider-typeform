@@ -5,6 +5,7 @@ package typeform
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"os"
 	"testing"
@@ -41,6 +42,13 @@ func TestCreateForm(t *testing.T) {
 				},
 				Validations: &Validations{
 					Required: helpers.BoolPtr(true),
+				},
+				Layout: &Layout{
+					Type: "split",
+					Attachment: Attachment{
+						Href: "https://images.typeform.com/images/QQgJMC6EqXen",
+						Type: "image",
+					},
 				},
 			},
 			{
@@ -106,7 +114,8 @@ func TestGetForm(t *testing.T) {
 		opts.HTTPClient = clients.TracerHTTPClient()
 	}
 
-	formID := "kvE1U8Mw"
+	//formID := "dezzD5Cw"
+	formID := "KMb3pAsq"
 
 	res, err := NewClient(opts).GetForm(context.TODO(), formID)
 	if err != nil {
@@ -122,6 +131,9 @@ func TestGetForm(t *testing.T) {
 
 	if res != nil {
 		t.Logf("Display link: %s", res.Links.Display)
+
+		s, _ := json.MarshalIndent(res, "", " ")
+		t.Logf("\n%s\n", s)
 	}
 }
 
@@ -146,7 +158,7 @@ func TestDeleteForm(t *testing.T) {
 }
 
 func setupEnv() error {
-	envMap, err := dotenv.FromFile("../../.env")
+	envMap, err := dotenv.FromFile("../../../.env")
 	if err != nil {
 		return err
 	}

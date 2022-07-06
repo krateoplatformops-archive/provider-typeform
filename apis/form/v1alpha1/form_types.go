@@ -90,6 +90,39 @@ type Field struct {
 	// Validations: specific properties for this field.
 	// +optional
 	Validations *Validations `json:"validations,omitempty"`
+
+	// Layout: allows you to position attachment.
+	// +optional
+	Layout *Layout `json:"layout,omitempty"`
+}
+
+// Attachment allows you to display images and videos.
+// Available for welcome and thank you screens, as well as all fields.
+type Attachment struct {
+	// URL for the image or video you want to display.
+	// Images must already exist in your account
+	Href string `json:"href,omitempty"`
+
+	// Type of attachment. Valid values: image, video
+	Type string `json:"type,omitempty"`
+
+	// Optional parameter for responsively scaling videos.
+	// Valid values: 0.4, 0.6, 0.8, 1
+	// +optional
+	Scale *int `json:"scale,omitempty"`
+}
+
+// Allows you to position attachment.
+// Available in all fields, Welcome and Thank you screens.
+type Layout struct {
+	Attachment Attachment `json:"attachment,omitempty"`
+
+	// Position of media for split and float layouts.
+	// Valid values: left, right.
+	Placement string `json:"placement,omitempty"`
+
+	// Type of layout. Valid values: split, wallpaper, float.
+	Type string `json:"type,omitempty"`
 }
 
 // FormParams are the configurable fields of a form instance.
