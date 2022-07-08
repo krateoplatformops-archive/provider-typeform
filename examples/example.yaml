@@ -22,7 +22,7 @@ spec:
             href: https://images.typeform.com/images/2F5mMmpUHXZR
 
       - type: rating
-        title: Livello di esposizione degli speaker?
+        title: Come giudichi il livello di esposizione degli speaker?
         properties:
           shape: heart
           steps: 5
@@ -30,7 +30,7 @@ spec:
           required: true
 
       - type: rating
-        title: Completezza degli argomenti trattati
+        title: Indica il livello di completezza degli argomenti trattati
         properties:
           shape: crown
           steps: 5
@@ -38,7 +38,7 @@ spec:
           required: true
 
       - type: rating
-        title: Durata dell'evento
+        title: Hai apprezzato la durata dell'evento?
         properties:
           shape: tick
           steps: 5
@@ -59,12 +59,12 @@ spec:
           maxLength: 300
       
       - type: long_text
-        title: Ci sono delle funzionalità "desiderata" che aggiungeresti?
+        title: Ci sono delle funzionalità che aggiungeresti?
         validations:
           maxLength: 300
 
       - type: multiple_choice
-        title: Quali sono gli aspetti che si sono dimostrati per lei più interessanti durante l'evento?
+        title: Quali sono gli aspetti che si sono dimostrati più interessanti durante l'evento?
         properties:
           description: (possibilità di scelta multipla)
           allowOtherChoice: true
