@@ -6,7 +6,29 @@ metadata:
     deploymentId: 62bdb86c502c2e33eb46a315
 spec:
   forProvider:
-    title: Form di esempio
+    title: Krateo PlatformOps CE 202207
+    welcomeScreens:
+      - title: Grazie per aver partecipato all'evento
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
+        properties:
+          buttonText: Inizia!
+          showButton: true
+    
+    thankyouScreens:
+      - title: Grazie per il tempo che ci hai dedicato!
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
+        properties:
+          shareIcons: true
+          showButton: false
+    
     fields:
       - type: rating
         title: In generale, che valutazione complessiva dai all'evento?
@@ -19,7 +41,7 @@ spec:
           type: split
           attachment:
             type: image
-            href: https://images.typeform.com/images/2F5mMmpUHXZR
+            href: https://images.typeform.com/images/p9ctZzmsu44E
 
       - type: rating
         title: Come giudichi il livello di esposizione degli speaker?
@@ -28,6 +50,11 @@ spec:
           steps: 5
         validations:
           required: true
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
 
       - type: rating
         title: Indica il livello di completezza degli argomenti trattati
@@ -36,6 +63,11 @@ spec:
           steps: 5
         validations:
           required: true
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
 
       - type: rating
         title: Hai apprezzato la durata dell'evento?
@@ -44,6 +76,11 @@ spec:
           steps: 5
         validations:
           required: true
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
 
       - type: rating
         title: Che voto daresti alla soluzione Krateo PlatformOps?
@@ -52,16 +89,31 @@ spec:
           steps: 5
         validations:
           required: true
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
           
       - type: long_text
         title: Quali sono le feature di Krateo PlatformOps che ti sono piaciute di più/che pensi possano essere più utili?
         validations:
           maxLength: 300
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
       
       - type: long_text
         title: Ci sono delle funzionalità che aggiungeresti?
         validations:
           maxLength: 300
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
 
       - type: multiple_choice
         title: Quali sono gli aspetti che si sono dimostrati più interessanti durante l'evento?
@@ -78,8 +130,11 @@ spec:
           ]
         validations:
           required: true
-          minSelection: 1
-          maxSelection: 3
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
       
       - type: multiple_choice
         title: Vorresti essere ricontattato da noi per un colloquio approfondito e personalizzato per approfondire Krateo?
@@ -93,6 +148,16 @@ spec:
             - 'No, non mi interessa'
         validations:
           required: true
+        layout:
+          type: split
+          attachment:
+            type: image
+            href: https://images.typeform.com/images/p9ctZzmsu44E
+      
+      - type: email
+        title: Se ti va lascia qui la tua email
+        validations:
+          required: false
       
   providerConfigRef:
     name: provider-typeform-config

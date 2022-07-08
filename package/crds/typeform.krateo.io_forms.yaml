@@ -188,9 +188,155 @@ spec:
                       - type
                       type: object
                     type: array
+                  thankyouScreens:
+                    description: 'ThankyouScreens: list of form thank you screens.'
+                    items:
+                      properties:
+                        attachment:
+                          description: Attachment allows you to display images and
+                            videos. Available for welcome and thank you screens, as
+                            well as all fields.
+                          properties:
+                            href:
+                              description: URL for the image or video you want to
+                                display. Images must already exist in your account
+                              type: string
+                            scale:
+                              description: 'Optional parameter for responsively scaling
+                                videos. Valid values: 0.4, 0.6, 0.8, 1'
+                              type: integer
+                            type:
+                              description: 'Type of attachment. Valid values: image,
+                                video'
+                              type: string
+                          type: object
+                        layout:
+                          description: Allows you to position attachment. Available
+                            in all fields, Welcome and Thank you screens.
+                          properties:
+                            attachment:
+                              description: Attachment allows you to display images
+                                and videos. Available for welcome and thank you screens,
+                                as well as all fields.
+                              properties:
+                                href:
+                                  description: URL for the image or video you want
+                                    to display. Images must already exist in your
+                                    account
+                                  type: string
+                                scale:
+                                  description: 'Optional parameter for responsively
+                                    scaling videos. Valid values: 0.4, 0.6, 0.8, 1'
+                                  type: integer
+                                type:
+                                  description: 'Type of attachment. Valid values:
+                                    image, video'
+                                  type: string
+                              type: object
+                            placement:
+                              description: 'Position of media for split and float
+                                layouts. Valid values: left, right.'
+                              type: string
+                            type:
+                              description: 'Type of layout. Valid values: split, wallpaper,
+                                float.'
+                              type: string
+                          type: object
+                        properties:
+                          properties:
+                            buttonMode:
+                              type: string
+                            buttonText:
+                              type: string
+                            redirectUrl:
+                              type: string
+                            shareIcons:
+                              type: boolean
+                            showButton:
+                              type: boolean
+                          type: object
+                        ref:
+                          type: string
+                        title:
+                          type: string
+                      required:
+                      - title
+                      type: object
+                    type: array
                   title:
                     description: 'Title: to use for this form.'
                     type: string
+                  welcomeScreens:
+                    description: 'WelcomeScreens: list of form welcome screens.'
+                    items:
+                      properties:
+                        attachment:
+                          description: Attachment allows you to display images and
+                            videos. Available for welcome and thank you screens, as
+                            well as all fields.
+                          properties:
+                            href:
+                              description: URL for the image or video you want to
+                                display. Images must already exist in your account
+                              type: string
+                            scale:
+                              description: 'Optional parameter for responsively scaling
+                                videos. Valid values: 0.4, 0.6, 0.8, 1'
+                              type: integer
+                            type:
+                              description: 'Type of attachment. Valid values: image,
+                                video'
+                              type: string
+                          type: object
+                        layout:
+                          description: Allows you to position attachment. Available
+                            in all fields, Welcome and Thank you screens.
+                          properties:
+                            attachment:
+                              description: Attachment allows you to display images
+                                and videos. Available for welcome and thank you screens,
+                                as well as all fields.
+                              properties:
+                                href:
+                                  description: URL for the image or video you want
+                                    to display. Images must already exist in your
+                                    account
+                                  type: string
+                                scale:
+                                  description: 'Optional parameter for responsively
+                                    scaling videos. Valid values: 0.4, 0.6, 0.8, 1'
+                                  type: integer
+                                type:
+                                  description: 'Type of attachment. Valid values:
+                                    image, video'
+                                  type: string
+                              type: object
+                            placement:
+                              description: 'Position of media for split and float
+                                layouts. Valid values: left, right.'
+                              type: string
+                            type:
+                              description: 'Type of layout. Valid values: split, wallpaper,
+                                float.'
+                              type: string
+                          type: object
+                        properties:
+                          properties:
+                            buttonText:
+                              type: string
+                            description:
+                              type: string
+                            showButton:
+                              type: boolean
+                          type: object
+                        ref:
+                          type: string
+                        title:
+                          type: string
+                      required:
+                      - title
+                      type: object
+                    type: array
                 required:
                 - title
                 type: object

@@ -125,6 +125,36 @@ type Layout struct {
 	Type string `json:"type,omitempty"`
 }
 
+type WelcomeScreen struct {
+	Ref        string                   `json:"ref,omitempty"`
+	Title      string                   `json:"title"`
+	Layout     *Layout                  `json:"layout,omitempty"`
+	Properties *WelcomeScreenProperties `json:"properties,omitempty"`
+	Attachment *Attachment              `json:"attachment,omitempty"`
+}
+
+type WelcomeScreenProperties struct {
+	ButtonText  string `json:"buttonText,omitempty"`
+	Description string `json:"description,omitempty"`
+	ShowButton  *bool  `json:"showButton,omitempty"`
+}
+
+type ThankyouScreen struct {
+	Title      string                    `json:"title"`
+	Ref        string                    `json:"ref,omitempty"`
+	Attachment *Attachment               `json:"attachment,omitempty"`
+	Properties *ThankYouScreenProperties `json:"properties,omitempty"`
+	Layout     *Layout                   `json:"layout,omitempty"`
+}
+
+type ThankYouScreenProperties struct {
+	ButtonMode  string `json:"buttonMode,omitempty"`
+	ButtonText  string `json:"buttonText,omitempty"`
+	RedirectURL string `json:"redirectUrl,omitempty"`
+	ShareIcons  *bool  `json:"shareIcons,omitempty"`
+	ShowButton  *bool  `json:"showButton,omitempty"`
+}
+
 // FormParams are the configurable fields of a form instance.
 type FormParams struct {
 	// Title: to use for this form.
@@ -132,6 +162,12 @@ type FormParams struct {
 
 	// Fields: list of form widgets.
 	Fields []Field `json:"fields,omitempty"`
+
+	// WelcomeScreens: list of form welcome screens.
+	WelcomeScreens []WelcomeScreen `json:"welcomeScreens,omitempty"`
+
+	// ThankyouScreens: list of form thank you screens.
+	ThankyouScreens []ThankyouScreen `json:"thankyouScreens,omitempty"`
 }
 
 // FormObservation are the observable fields of a Form.

@@ -1,0 +1,312 @@
+{
+    "id": "ExiXwqbJ",
+    "type": "quiz",
+    "title": "Krateo PlatformOps CE 202207",
+    "workspace": {
+        "href": "https://api.typeform.com/workspaces/Z2YAsZ"
+    },
+    "theme": {
+        "href": "https://api.typeform.com/themes/qHWOQ7"
+    },
+    "settings": {
+        "language": "en",
+        "progress_bar": "proportion",
+        "meta": {
+            "allow_indexing": false
+        },
+        "hide_navigation": false,
+        "is_public": true,
+        "is_trial": false,
+        "show_progress_bar": true,
+        "show_typeform_branding": true,
+        "are_uploads_public": false,
+        "show_time_to_complete": true,
+        "show_number_of_submissions": false,
+        "show_cookie_consent": false,
+        "show_question_number": true,
+        "pro_subdomain_enabled": false,
+        "capabilities": {
+            "e2e_encryption": {
+                "enabled": false,
+                "modifiable": false
+            }
+        }
+    },
+    "thankyou_screens": [
+        {
+            "id": "DefaultTyScreen",
+            "ref": "default_tys",
+            "title": "Thanks for completing this typeform\nNow *create your own* — it's free, easy, \u0026 beautiful",
+            "type": "thankyou_screen",
+            "properties": {
+                "show_button": true,
+                "share_icons": false,
+                "button_mode": "default_redirect",
+                "button_text": "Create a *typeform*"
+            },
+            "attachment": {
+                "type": "image",
+                "href": "https://images.typeform.com/images/2dpnUBBkz2VN"
+            }
+        }
+    ],
+    "fields": [
+        {
+            "id": "oCqddlDYTgad",
+            "title": "In generale, che valutazione complessiva dai all'evento?",
+            "ref": "rating-1",
+            "properties": {
+                "shape": "star",
+                "steps": 5
+            },
+            "validations": {
+                "required": true
+            },
+            "type": "rating",
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/Ndzeu89qTZaj"
+                }
+            }
+        },
+        {
+            "id": "qja0uQ9WbCFr",
+            "title": "Come giudichi il livello di esposizione degli speaker?",
+            "ref": "rating-2",
+            "properties": {
+                "shape": "heart",
+                "steps": 5
+            },
+            "validations": {
+                "required": true
+            },
+            "type": "rating",
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/Ndzeu89qTZaj"
+                }
+            }
+        },
+        {
+            "id": "9UP6Zac74VDJ",
+            "title": "Indica il livello di completezza degli argomenti trattati",
+            "ref": "rating-3",
+            "properties": {
+                "shape": "crown",
+                "steps": 5
+            },
+            "validations": {
+                "required": true
+            },
+            "type": "rating",
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/Ndzeu89qTZaj"
+                }
+            }
+        },
+        {
+            "id": "AkzBGBIsdsZm",
+            "title": "Hai apprezzato la durata dell'evento?",
+            "ref": "rating-4",
+            "properties": {
+                "shape": "tick",
+                "steps": 5
+            },
+            "validations": {
+                "required": true
+            },
+            "type": "rating",
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/Ndzeu89qTZaj"
+                }
+            }
+        },
+        {
+            "id": "rPBlO6nSkOmS",
+            "title": "Che voto daresti alla soluzione Krateo PlatformOps?",
+            "ref": "rating-5",
+            "properties": {
+                "shape": "up",
+                "steps": 5
+            },
+            "validations": {
+                "required": true
+            },
+            "type": "rating",
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/Ndzeu89qTZaj"
+                }
+            }
+        },
+        {
+            "id": "CP3PIlvHRYWn",
+            "title": "Quali sono le feature di Krateo PlatformOps che ti sono piaciute di più/che pensi possano essere più utili?",
+            "ref": "long-text-1",
+            "properties": {},
+            "validations": {
+                "required": false,
+                "max_length": 300
+            },
+            "type": "long_text",
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/Ndzeu89qTZaj"
+                }
+            }
+        },
+        {
+            "id": "QBywe1qnvlnH",
+            "title": "Ci sono delle funzionalità che aggiungeresti?",
+            "ref": "long-text-2",
+            "properties": {},
+            "validations": {
+                "required": false,
+                "max_length": 300
+            },
+            "type": "long_text",
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/Ndzeu89qTZaj"
+                }
+            }
+        },
+        {
+            "id": "FLuy7td1sC3T",
+            "title": "Quali sono gli aspetti che si sono dimostrati più interessanti durante l'evento?",
+            "ref": "multiple-choice-1",
+            "properties": {
+                "description": "(possibilità di scelta multipla)",
+                "randomize": false,
+                "allow_multiple_selection": false,
+                "allow_other_choice": true,
+                "vertical_alignment": true,
+                "choices": [
+                    {
+                        "id": "7pyw0XYVeO9M",
+                        "ref": "01G7EZ9PWNCFEWHCZZ4D9T6WW8",
+                        "label": "Il keynote su Krateo PlatformOps"
+                    },
+                    {
+                        "id": "rVxONWhi98vg",
+                        "ref": "01G7EZ9PWNZ2TX7RRWBERB0WEZ",
+                        "label": "Il talk Platform Teams: Key to Success at Scale"
+                    },
+                    {
+                        "id": "2FyYij8uZBj3",
+                        "ref": "01G7EZ9PWN3RRRJG81AVX91JTT",
+                        "label": "Il talk DevOps: Bridging the Gap Between Modern and Legacy Architectures"
+                    },
+                    {
+                        "id": "HApJBVEGAbKy",
+                        "ref": "01G7EZ9PWN39XX8WPJB6QX8SJ7",
+                        "label": "Il talk Cloud Native Architecture to the Edge"
+                    },
+                    {
+                        "id": "uT4rYRtlBZgZ",
+                        "ref": "01G7EZ9PWNQZ2Z30CMSX23172J",
+                        "label": "La sessione di live coding sui Crossplane Provider"
+                    },
+                    {
+                        "id": "3HcHUahAThgx",
+                        "ref": "01G7EZ9PWNMYWT59YV889S17W6",
+                        "label": "La sessione di live coding sulle CrossplaneComposition"
+                    },
+                    {
+                        "id": "jHhBaK15IvQ5",
+                        "ref": "01G7EZ9PWNTVBHVPTBP2BY6CY5",
+                        "label": "La sessione di live coding sui Krateo Template"
+                    }
+                ]
+            },
+            "validations": {
+                "required": true
+            },
+            "type": "multiple_choice",
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/Ndzeu89qTZaj"
+                }
+            }
+        },
+        {
+            "id": "SXOwhmAchTj1",
+            "title": "Vorresti essere ricontattato da noi per un colloquio approfondito e personalizzato per approfondire Krateo?",
+            "ref": "multiple-choice-2",
+            "properties": {
+                "description": "(possibilità di scelta multipla)",
+                "randomize": false,
+                "allow_multiple_selection": false,
+                "allow_other_choice": true,
+                "vertical_alignment": true,
+                "choices": [
+                    {
+                        "id": "CfJZbjF1OpDn",
+                        "ref": "01G7EZ9PWNBJ3SG71HY3RBNAVQ",
+                        "label": "Sì, entro i prossimi 3 mesi"
+                    },
+                    {
+                        "id": "LVcp6S33LwBP",
+                        "ref": "01G7EZ9PWN2HGFFZYZ4G4FVN7R",
+                        "label": "Sì, entro i prossimi 6 mesi"
+                    },
+                    {
+                        "id": "H5cmRRsUOpUT",
+                        "ref": "01G7EZ9PWN79HJ3NM66GFB9CG1",
+                        "label": "Sì, entro i prossimi 12 mesi"
+                    },
+                    {
+                        "id": "ezOZzM0ldOCq",
+                        "ref": "01G7EZ9PWNRD44YRV263QW0G87",
+                        "label": "No, non mi interessa"
+                    }
+                ]
+            },
+            "validations": {
+                "required": true
+            },
+            "type": "multiple_choice",
+            "layout": {
+                "type": "split",
+                "attachment": {
+                    "type": "image",
+                    "href": "https://images.typeform.com/images/Ndzeu89qTZaj"
+                }
+            }
+        },
+        {
+            "id": "uv2QqYMVyAVI",
+            "title": "Se ti va lascia qui la tua email",
+            "ref": "email-1",
+            "properties": {},
+            "validations": {
+                "required": false
+            },
+            "type": "email"
+        }
+    ],
+    "created_at": "2022-07-08T13:17:00+00:00",
+    "last_updated_at": "2022-07-08T13:17:10+00:00",
+    "published_at": "2022-07-08T13:17:00+00:00",
+    "_links": {
+        "display": "https://94rggqvqecq.typeform.com/to/ExiXwqbJ"
+    }
+}

@@ -36,8 +36,8 @@ func IsUpToDate(log logging.Logger, in *v1alpha1.FormParams, observed *typeform.
 		cmpopts.SortSlices(func(a, b string) bool {
 			return a < b
 		}),
-		cmpopts.IgnoreFields(typeform.Form{}, "ID", "Links"),
-		cmpopts.IgnoreFields(typeform.Field{}, "ID"),
+		cmpopts.IgnoreFields(typeform.Form{}, "ID", "Theme", "Links"),
+		cmpopts.IgnoreFields(typeform.Field{}, "ID", "Layout"),
 	))
 
 	if diff != "" {
@@ -95,9 +95,90 @@ func ToFormParameters(in *typeform.Form) *v1alpha1.FormParams {
 
 func FromFormParams(in *v1alpha1.FormParams) *typeform.Form {
 	res := &typeform.Form{
-		Title:  in.Title,
-		Type:   "form",
-		Fields: make([]typeform.Field, len(in.Fields)),
+		Title:           in.Title,
+		Type:            "form",
+		Fields:          make([]typeform.Field, len(in.Fields)),
+		WelcomeScreens:  make([]typeform.WelcomeScreen, len(in.WelcomeScreens)),
+		ThankyouScreens: make([]typeform.ThankyouScreen, len(in.ThankyouScreens)),
+	}
+
+	if len(in.WelcomeScreens) > 0 {
+		for i, el := range in.WelcomeScreens {
+			res.WelcomeScreens[i].Ref = el.Ref
+			res.WelcomeScreens[i].Title = el.Title
+			if el.Attachment != nil {
+				res.WelcomeScreens[i].Attachment = &typeform.Attachment{
+					Href: el.Attachment.Href,
+					Type: el.Attachment.Type,
+				}
+				if el.Attachment.Scale != nil {
+					res.WelcomeScreens[i].Attachment.Scale = helpers.IntPtr(*el.Attachment.Scale)
+				}
+			}
+			if el.Layout != nil {
+				res.WelcomeScreens[i].Layout = &typeform.Layout{
+					Placement: el.Layout.Placement,
+					Type:      el.Layout.Type,
+					Attachment: typeform.Attachment{
+						Href: el.Layout.Attachment.Href,
+						Type: el.Layout.Attachment.Type,
+					},
+				}
+				if el.Layout.Attachment.Scale != nil {
+					res.WelcomeScreens[i].Layout.Attachment.Scale = helpers.IntPtr(*el.Layout.Attachment.Scale)
+				}
+			}
+			if el.Properties != nil {
+				res.WelcomeScreens[i].Properties = &typeform.WelcomeScreenProperties{
+					ButtonText:  el.Properties.ButtonText,
+					Description: el.Properties.Description,
+				}
+				if el.Properties.ShowButton != nil {
+					res.WelcomeScreens[i].Properties.ShowButton = helpers.BoolPtr(*el.Properties.ShowButton)
+				}
+			}
+		}
+	}
+
+	if len(in.ThankyouScreens) > 0 {
+		for i, el := range in.ThankyouScreens {
+			res.ThankyouScreens[i].Ref = el.Ref
+			res.ThankyouScreens[i].Title = el.Title
+			if el.Attachment != nil {
+				res.ThankyouScreens[i].Attachment = &typeform.Attachment{
+					Href: el.Attachment.Href,
+					Type: el.Attachment.Type,
+				}
+				if el.Attachment.Scale != nil {
+					res.ThankyouScreens[i].Attachment.Scale = helpers.IntPtr(*el.Attachment.Scale)
+				}
+			}
+			if el.Layout != nil {
+				res.ThankyouScreens[i].Layout = &typeform.Layout{
+					Placement: el.Layout.Placement,
+					Type:      el.Layout.Type,
+					Attachment: typeform.Attachment{
+						Href: el.Layout.Attachment.Href,
+						Type: el.Layout.Attachment.Type,
+					},
+				}
+				if el.Layout.Attachment.Scale != nil {
+					res.ThankyouScreens[i].Layout.Attachment.Scale = helpers.IntPtr(*el.Layout.Attachment.Scale)
+				}
+			}
+			if el.Properties != nil {
+				res.ThankyouScreens[i].Properties = &typeform.ThankYouScreenProperties{
+					ButtonMode: el.Properties.ButtonMode,
+					ButtonText: el.Properties.ButtonText,
+				}
+				if el.Properties.ShowButton != nil {
+					res.ThankyouScreens[i].Properties.ShowButton = helpers.BoolPtr(*el.Properties.ShowButton)
+				}
+				if el.Properties.ShareIcons != nil {
+					res.ThankyouScreens[i].Properties.ShareIcons = helpers.BoolPtr(*el.Properties.ShareIcons)
+				}
+			}
+		}
 	}
 
 	counters := map[string]int{}

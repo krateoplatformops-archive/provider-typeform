@@ -3,10 +3,12 @@ package typeform
 import "strings"
 
 type Form struct {
-	ID    string `json:"id,omitempty"`
-	Title string `json:"title"`
-	Type  string `json:"type"`
-	Theme *struct {
+	ID              string           `json:"id,omitempty"`
+	Title           string           `json:"title"`
+	Type            string           `json:"type"`
+	WelcomeScreens  []WelcomeScreen  `json:"welcome_screens,omitempty"`
+	ThankyouScreens []ThankyouScreen `json:"thankyou_screens,omitempty"`
+	Theme           *struct {
 		Href string `json:"href"`
 	} `json:"theme,omitempty"`
 	Fields []Field `json:"fields,omitempty"`
@@ -69,6 +71,36 @@ type Layout struct {
 	Attachment Attachment `json:"attachment,omitempty"`
 	Placement  string     `json:"placement,omitempty"`
 	Type       string     `json:"type,omitempty"`
+}
+
+type WelcomeScreen struct {
+	Ref        string                   `json:"ref,omitempty"`
+	Title      string                   `json:"title"`
+	Layout     *Layout                  `json:"layout,omitempty"`
+	Properties *WelcomeScreenProperties `json:"properties,omitempty"`
+	Attachment *Attachment              `json:"attachment,omitempty"`
+}
+
+type WelcomeScreenProperties struct {
+	ButtonText  string `json:"button_text,omitempty"`
+	Description string `json:"description,omitempty"`
+	ShowButton  *bool  `json:"show_button,omitempty"`
+}
+
+type ThankyouScreen struct {
+	Title      string                    `json:"title"`
+	Ref        string                    `json:"ref,omitempty"`
+	Attachment *Attachment               `json:"attachment,omitempty"`
+	Properties *ThankYouScreenProperties `json:"properties,omitempty"`
+	Layout     *Layout                   `json:"layout,omitempty"`
+}
+
+type ThankYouScreenProperties struct {
+	ButtonMode  string `json:"button_mode,omitempty"`
+	ButtonText  string `json:"button_text,omitempty"`
+	RedirectURL string `json:"redirect_url,omitempty"`
+	ShareIcons  *bool  `json:"share_icons,omitempty"`
+	ShowButton  *bool  `json:"show_button,omitempty"`
 }
 
 type Errors struct {
