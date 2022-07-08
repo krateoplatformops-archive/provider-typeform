@@ -17,10 +17,9 @@ spec:
           required: true
         layout:
           type: split
-          placement: left
           attachment:
             type: image
-            href: https://images.typeform.com/images/teHQUBBA4TDX
+            href: https://images.typeform.com/images/2F5mMmpUHXZR
 
       - type: rating
         title: Livello di esposizione degli speaker?
