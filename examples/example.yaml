@@ -68,7 +68,14 @@ spec:
         properties:
           description: (possibilità di scelta multipla)
           allowOtherChoice: true
-          choices: ['Uno', 'Due', 'Tre']
+          choices: ['Il keynote su Krateo PlatformOps',
+          'Il talk Platform Teams: Key to Success at Scale',
+          'Il talk DevOps: Bridging the Gap Between Modern and Legacy Architectures', 
+          'Il talk Cloud Native Architecture to the Edge',
+          'La sessione di live coding sui Crossplane Provider',
+          'La sessione di live coding sulle CrossplaneComposition',
+          'La sessione di live coding sui Krateo Template'
+          ]
         validations:
           required: true
           minSelection: 1
