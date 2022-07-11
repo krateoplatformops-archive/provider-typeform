@@ -21,6 +21,7 @@ type ClientOpts struct {
 
 type Client interface {
 	CreateForm(ctx context.Context, val *Form) (*Form, error)
+	UpdateForm(ctx context.Context, val *Form) error
 	GetForm(ctx context.Context, id string) (*Form, error)
 	DeleteForm(ctx context.Context, id string) error
 }
@@ -62,6 +63,22 @@ func (c *typeFormClient) CreateForm(ctx context.Context, val *Form) (*Form, erro
 	}
 
 	return res, nil
+}
+
+func (c *typeFormClient) UpdateForm(ctx context.Context, val *Form) error {
+	dat, err := json.Marshal(val)
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest(http.MethodPut,
+		fmt.Sprintf("%s/forms/%s", baseApiURL, val.ID), bytes.NewBuffer(dat))
+	if err != nil {
+		return err
+	}
+
+	req = req.WithContext(ctx)
+
+	return c.sendRequest(req, nil)
 }
 
 func (c *typeFormClient) GetForm(ctx context.Context, id string) (*Form, error) {

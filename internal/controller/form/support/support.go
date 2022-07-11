@@ -14,8 +14,8 @@ import (
 )
 
 // IsUpToDate checks whether current state is up-to-date compared to the given set of parameters.
-func IsUpToDate(log logging.Logger, in *v1alpha1.FormParams, observed *typeform.Form) (bool, error) {
-	desired := FromFormParams(in.DeepCopy())
+func IsUpToDate(in *v1alpha1.FormParams, observed *typeform.Form) (bool, error) {
+	desired := FromSpecToForm(in.DeepCopy())
 
 	diff := (cmp.Diff(desired, observed,
 		cmpopts.EquateEmpty(),
@@ -36,20 +36,19 @@ func IsUpToDate(log logging.Logger, in *v1alpha1.FormParams, observed *typeform.
 		cmpopts.SortSlices(func(a, b string) bool {
 			return a < b
 		}),
-		cmpopts.IgnoreFields(typeform.Form{}, "ID", "Theme", "Links", "ThankyouScreens", "WelcomeScreens"),
+		cmpopts.IgnoreFields(typeform.Form{}, "ID", "Type", "Theme", "Links", "ThankyouScreens", "WelcomeScreens"),
 		cmpopts.IgnoreFields(typeform.Field{}, "ID", "Layout"),
 	))
 
 	if diff != "" {
 		fmt.Printf("\n\n%s\n\n", diff)
-		log.Info("IsUpToDate", "Diff", diff)
 		return false, nil
 	}
 
 	return true, nil
 }
 
-func FromFormParams(in *v1alpha1.FormParams) *typeform.Form {
+func FromSpecToForm(in *v1alpha1.FormParams) *typeform.Form {
 	res := &typeform.Form{
 		Title:           in.Title,
 		Type:            "form",

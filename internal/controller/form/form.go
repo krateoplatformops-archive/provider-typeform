@@ -146,7 +146,7 @@ func (e *external) Observe(ctx context.Context, mg resource.Managed) (managed.Ex
 		"id", instance.ID,
 		"displayUrl", cr.Status.AtProvider.DisplayURL)
 
-	upToDate, err := support.IsUpToDate(e.log, &cr.Spec.ForProvider, instance)
+	upToDate, err := support.IsUpToDate(&cr.Spec.ForProvider, instance)
 	if err != nil {
 		return managed.ExternalObservation{}, errors.Wrap(err, errCheckUpToDate)
 	}
@@ -169,7 +169,7 @@ func (e *external) Create(ctx context.Context, mg resource.Managed) (managed.Ext
 
 	spec := cr.Spec.ForProvider.DeepCopy()
 
-	val := support.FromFormParams(spec)
+	val := support.FromSpecToForm(spec)
 	res, err := e.client.CreateForm(ctx, val)
 	if err != nil {
 		support.Notify(e.log, e.notifier, notifications.Error(
@@ -199,7 +199,23 @@ func (e *external) Create(ctx context.Context, mg resource.Managed) (managed.Ext
 }
 
 func (e *external) Update(ctx context.Context, mg resource.Managed) (managed.ExternalUpdate, error) {
-	// NOOP
+	cr, ok := mg.(*v1alpha1.Form)
+	if !ok {
+		return managed.ExternalUpdate{}, errors.New(errInvalidCR)
+	}
+
+	formID := meta.GetExternalName(cr)
+	e.log.Info("Updated requested but BOT implemented yet", "formID", formID)
+
+	spec := cr.Spec.DeepCopy()
+	desired := support.FromSpecToForm(&spec.ForProvider)
+	desired.ID = formID
+
+	err := e.client.UpdateForm(ctx, desired)
+	if err != nil {
+		return managed.ExternalUpdate{}, err
+	}
+
 	return managed.ExternalUpdate{}, nil
 }
 
