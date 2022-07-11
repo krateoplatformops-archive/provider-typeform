@@ -23,7 +23,7 @@ jobs:
         id: version_step
         run: |
           echo "##[set-output name=version;]v${GITHUB_REF#$"refs/tags/v"}"
-          echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:v${GITHUB_REF#$"refs/tags/v"}"
+          echo "##[set-output name=version_tag;]${GITHUB_REPOSITORY}-controller:v${GITHUB_REF#$"refs/tags/v"}"
 
       - name: Print Version
         run: |
@@ -57,7 +57,7 @@ jobs:
         with:
           push: true
           platforms: linux/amd64
-          tags: ${{ env.REGISTRY }}/${{env.VERSION_TAG}}
+          tags: ${{ env.REGISTRY }}/${{steps.version_step.outputs.version_tag}}
           build-args: |
             ${{steps.version_step.outputs.version}}
       
@@ -71,4 +71,4 @@ jobs:
       - name: Push xpkg
         uses: crossplane-contrib/xpkg-action@master
         with:
-          command: push provider -f package/${{ github.event.repository.name }}.xpkg ghcr.io/${{ github.event.repository.owner.name }}/${{ github.event.repository.name }}:${{ steps.tagger.outputs.VERSION_TAG }}
+          command: push provider -f package/${{ github.event.repository.name }}.xpkg ghcr.io/${GITHUB_REPOSITORY}:${{steps.version_step.outputs.version}}
