@@ -22,16 +22,16 @@ jobs:
       - name: Extract Version
         id: version_step
         run: |
-          echo "##[set-output name=version;]VERSION=v${GITHUB_REF#$"refs/tags/v"}"
+          echo "##[set-output name=version;]v${GITHUB_REF#$"refs/tags/v"}"
           echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:v${GITHUB_REF#$"refs/tags/v"}"
 
       - name: Print Version
         run: |
           echo ${{steps.version_step.outputs.version_tag}}
-          echo ${{steps.version_step.outputs.version_tag}}
+          echo ${{steps.version_step.outputs.version}}
 
       - name: Replace VERSION in crossplane.yaml
-        run: sed -i 's/VERSION/${{ steps.tagger.outputs.VERSION }}/g' package/crossplane.yaml
+        run: sed -i 's/VERSION/${{steps.version_step.outputs.version}}/g' package/crossplane.yaml
       
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
