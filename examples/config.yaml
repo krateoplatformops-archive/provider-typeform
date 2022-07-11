@@ -4,7 +4,7 @@ metadata:
   name: provider-typeform-config
 spec:
   #logServiceUrl: http://deployment.krateoplatformops.io/
-  verbose: true
+  verbose: false
   credentials:
     source: Secret
     secretRef:

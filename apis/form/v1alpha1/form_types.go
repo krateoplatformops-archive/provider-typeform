@@ -83,6 +83,10 @@ type Field struct {
 	// Title: Unique name you assign to the field on this form.
 	Title string `json:"title"`
 
+	// Ref: Readable name you can use to reference the field.
+	// +optional
+	Ref *string `json:"ref,omitempty"`
+
 	// Properties: specific properties for this field.
 	// +optional
 	Properties Properties `json:"properties,omitempty"`

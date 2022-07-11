@@ -150,6 +150,10 @@ spec:
                                 rating.'
                               type: integer
                           type: object
+                        ref:
+                          description: 'Ref: Readable name you can use to reference
+                            the field.'
+                          type: string
                         title:
                           description: 'Title: Unique name you assign to the field
                             on this form.'

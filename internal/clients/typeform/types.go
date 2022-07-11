@@ -2,10 +2,18 @@ package typeform
 
 import "strings"
 
+type Settings struct {
+	IsPublic               *bool   `json:"is_public,omitempty"`
+	RedirectAfterSubmitURL *string `json:"redirect_after_submit_url,omitempty"`
+	ShowProgressBar        *bool   `json:"show_progress_bar,omitempty"`
+	ShowTimeToComplete     *bool   `json:"show_time_to_complete,omitempty"`
+}
+
 type Form struct {
 	ID              string           `json:"id,omitempty"`
 	Title           string           `json:"title"`
 	Type            string           `json:"type"`
+	Settings        *Settings        `json:"settings,omitempty"`
 	WelcomeScreens  []WelcomeScreen  `json:"welcome_screens,omitempty"`
 	ThankyouScreens []ThankyouScreen `json:"thankyou_screens,omitempty"`
 	Theme           *struct {

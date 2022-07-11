@@ -140,7 +140,7 @@ spec:
         title: Vorresti essere ricontattato da noi per un colloquio approfondito e personalizzato per approfondire Krateo?
         properties:
           description: (possibilità di scelta multipla)
-          allowOtherChoice: true
+          allowOtherChoice: false
           choices: 
             - 'Sì, entro i prossimi 3 mesi'
             - 'Sì, entro i prossimi 6 mesi'
