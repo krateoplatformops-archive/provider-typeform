@@ -1,0 +1,76 @@
+name: release
+
+on:
+  push:
+    tags: [ '*' ]
+
+env:
+  REGISTRY: ghcr.io
+  ORG: krateoplatformops
+  DOCKER_REGISTRY: ${REGISTRY}/${ORG}
+
+jobs:
+  package:
+    runs-on: ubuntu-20.04
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Extract Version
+        id: version_step
+        run: |
+          echo "##[set-output name=version;]VERSION=${GITHUB_REF#$"refs/tags/v"}"
+          echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:${GITHUB_REF#$"refs/tags/v"}"
+          echo "##[set-output name=latest_tag;]$GITHUB_REPOSITORY:latest"
+      - name: Print Version
+        run: |
+          echo ${{steps.version_step.outputs.version_tag}}
+          echo ${{steps.version_step.outputs.latest_tag}}
+
+      - name: Replace VERSION in crossplane.yaml
+        run: sed -i 's/VERSION/${{ steps.tagger.outputs.VERSION_TAG }}/g' package/crossplane.yaml
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to CR
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: PrepareReg Names
+        id: read-docker-image-identifiers
+        run: |
+          echo VERSION_TAG=$(echo ${{ steps.version_step.outputs.version_tag }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+          echo LASTEST_TAG=$(echo ${{ steps.version_step.outputs.latest_tag  }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          tags: |
+            ${{env.VERSION_TAG}}
+            ${{env.LASTEST_TAG}}
+          build-args: |
+            ${{steps.version_step.outputs.version}}
+      
+      - name: Build xpkg
+        uses: crossplane-contrib/xpkg-action@master
+        with:
+          channel: ${{ github.event.inputs.channel }}
+          version: ${{ github.event.inputs.version }}
+          command: build provider -f package --name=${{ github.event.repository.name }}
+        
+      - name: Push xpkg
+        uses: crossplane-contrib/xpkg-action@master
+        with:
+          command: push provider -f package/${{ github.event.repository.name }}.xpkg ghcr.io/${{ github.event.repository.owner.name }}/${{ github.event.repository.name }}:${{ steps.tagger.outputs.VERSION_TAG }}
