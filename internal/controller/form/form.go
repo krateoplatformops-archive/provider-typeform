@@ -205,7 +205,7 @@ func (e *external) Update(ctx context.Context, mg resource.Managed) (managed.Ext
 	}
 
 	formID := meta.GetExternalName(cr)
-	e.log.Info("Updated requested but BOT implemented yet", "formID", formID)
+	e.log.Info("Updated requested", "formID", formID)
 
 	spec := cr.Spec.DeepCopy()
 	desired := support.FromSpecToForm(&spec.ForProvider)
