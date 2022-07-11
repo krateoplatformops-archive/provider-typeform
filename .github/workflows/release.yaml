@@ -28,6 +28,7 @@ jobs:
       - name: Print Version
         run: |
           echo ${{steps.version_step.outputs.version_tag}}
+          echo ${{steps.version_step.outputs.version_tag}}
 
       - name: Replace VERSION in crossplane.yaml
         run: sed -i 's/VERSION/${{ steps.tagger.outputs.VERSION }}/g' package/crossplane.yaml
