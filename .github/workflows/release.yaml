@@ -23,13 +23,12 @@ jobs:
       - name: Extract Version
         id: version_step
         run: |
-          echo "##[set-output name=version;]VERSION=${GITHUB_REF#$"refs/tags/v"}"
-          echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:${GITHUB_REF#$"refs/tags/v"}"
-          echo "##[set-output name=latest_tag;]$GITHUB_REPOSITORY:latest"
+          echo "##[set-output name=version;]VERSION=v${GITHUB_REF#$"refs/tags/v"}"
+          echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:v${GITHUB_REF#$"refs/tags/v"}"
+
       - name: Print Version
         run: |
           echo ${{steps.version_step.outputs.version_tag}}
-          echo ${{steps.version_step.outputs.latest_tag}}
 
       - name: Replace VERSION in crossplane.yaml
         run: sed -i 's/VERSION/${{ steps.tagger.outputs.VERSION_TAG }}/g' package/crossplane.yaml
@@ -59,9 +58,7 @@ jobs:
         with:
           push: true
           platforms: linux/amd64
-          tags: |
-            ${{env.VERSION_TAG}}
-            ${{env.LASTEST_TAG}}
+          tags: ${{ env.REGISTRY }}/${{env.VERSION_TAG}}
           build-args: |
             ${{steps.version_step.outputs.version}}
       
