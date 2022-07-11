@@ -8,7 +8,7 @@ spec:
   forProvider:
     title: Krateo PlatformOps CE 202207
     welcomeScreens:
-      - title: Grazie per aver partecipato all'evento
+      - title: Grazie per aver partecipato all'evento blha blha blha
         layout:
           type: split
           attachment:
@@ -30,6 +30,13 @@ spec:
           showButton: false
     
     fields:
+      - type: email
+        title: Il tuo indirizzo email?
+        properties:
+          description: Ti contatteremo solo se sarai interessato
+        validations:
+          required: true
+
       - type: rating
         title: In generale, che valutazione complessiva dai all'evento?
         properties:
@@ -153,11 +160,6 @@ spec:
           attachment:
             type: image
             href: https://images.typeform.com/images/p9ctZzmsu44E
-      
-      - type: email
-        title: Se ti va lascia qui la tua email
-        validations:
-          required: false
       
   providerConfigRef:
     name: provider-typeform-config
