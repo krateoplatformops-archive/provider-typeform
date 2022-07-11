@@ -15,55 +15,28 @@ ifndef VERSION
 VERSION := 0.0.0
 endif
 
-BUILD_DATE := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-REPO_URL := $(shell git config --get remote.origin.url | sed "s/git@/https\:\/\//; s/\.com\:/\.com\//; s/\.git//")
-LAST_COMMIT := $(shell git log -1 --pretty=%h)
-
-PROJECT_NAME := provider-typeform
-ORG_NAME := krateoplatformops
-VENDOR := Kiratech S.p.A.
-
-# Github Container Registry
-DOCKER_REGISTRY := ghcr.io/$(ORG_NAME)
-
-TARGET_OS := linux
-TARGET_ARCH := amd64
-
 # Tools
 KIND=$(shell which kind)
 LINT=$(shell which golangci-lint)
 KUBECTL=$(shell which kubectl)
-DOCKER=$(shell which docker)
 SED=$(shell which sed)
 
 .DEFAULT_GOAL := help
 
-.PHONY: print.vars
-print.vars: ## print all the build variables
-	@echo VENDOR=$(VENDOR)
-	@echo ORG_NAME=$(ORG_NAME)
-	@echo PROJECT_NAME=$(PROJECT_NAME)
-	@echo REPO_URL=$(REPO_URL)
-	@echo LAST_COMMIT=$(LAST_COMMIT)
-	@echo VERSION=$(VERSION)
-	@echo BUILD_DATE=$(BUILD_DATE)
-	@echo TARGET_OS=$(TARGET_OS)
-	@echo TARGET_ARCH=$(TARGET_ARCH)
-	@echo DOCKER_REGISTRY=$(DOCKER_REGISTRY)
-
-
-.PHONY: dev
-dev: generate ## run the controller in debug mode
-	$(KUBECTL) apply -f package/crds/ -R
-	go run cmd/provider/main.go -d
-
-.PHONY: generate
-generate: tidy ## generate all CRDs
-	go generate ./...
-
 .PHONY: tidy
 tidy: ## go mod tidy
 	go mod tidy
+
+.PHONY: generate
+generate: ## generate all CRDs
+generate: tidy
+	go generate ./...
+
+.PHONY: dev
+dev: ## run the controller in debug mode
+dev: generate 
+	$(KUBECTL) apply -f package/crds/ -R
+	go run cmd/provider/main.go -d
 
 .PHONY: test
 test: ## go test
@@ -73,44 +46,29 @@ test: ## go test
 lint: ## go lint
 	$(LINT) run
 
-.PHONY: kind.up
-kind.up: ## starts a KinD cluster for local development
+.PHONY: kind-up
+kind-up: ## starts a KinD cluster for local development
 	@$(KIND) get kubeconfig --name $(KIND_CLUSTER_NAME) >/dev/null 2>&1 || $(KIND) create cluster --name=$(KIND_CLUSTER_NAME)
 
-.PHONY: kind.down
-kind.down: ## shuts down the KinD cluster
+.PHONY: kind-down
+kind-down: ## shuts down the KinD cluster
 	@$(KIND) delete cluster --name=$(KIND_CLUSTER_NAME)
 
-.PHONY: image.build
-image.build: ## build the controller Docker image
-	@$(DOCKER) build -t "$(DOCKER_REGISTRY)/$(PROJECT_NAME)-controller:$(VERSION)" \
-	--build-arg METRICS_PORT=8080 \
-	--build-arg VERSION="$(VERSION)" \
-	--build-arg BUILD_DATE="$(BUILD_DATE)" \
-	--build-arg REPO_URL="$(REPO_URL)" \
-	--build-arg LAST_COMMIT="$(LAST_COMMIT)" \
-	--build-arg PROJECT_NAME="$(PROJECT_NAME)" \
-	--build-arg VENDOR="$(VENDOR)" .
-
-
-.PHONY: image.push
-image.push: ## Push the Docker image to the Github Registry
-	@$(DOCKER) push "$(DOCKER_REGISTRY)/$(PROJECT_NAME)-controller:$(VERSION)"
-
-.PHONY: install.crossplane
-install.crossplane: ## Install Crossplane into the local KinD cluster
+.PHONY: crossplane
+crossplane: ## install Crossplane into the local KinD cluster
 	$(KUBECTL) create namespace crossplane-system || true
 	helm repo add crossplane-stable https://charts.crossplane.io/stable
 	helm repo update
 	helm install crossplane --namespace crossplane-system crossplane-stable/crossplane
 
 
-.PHONY: install.provider
-install.provider: ## Install this provider
+.PHONY: provider
+provider: ## install this provider
 	@$(SED) 's/VERSION/$(VERSION)/g' ./examples/provider.yaml | $(KUBECTL) apply -f -
 
 .PHONY: demo
-demo: kind.up  ## Run a demo of this provider
+demo: ## run a demo of this provider
+demo: kind-up 
 	@$(KUBECTL) create secret generic typeform.com-secret --from-literal=token=$(TYPEFORM_API_TOKEN) || true
 	@$(KUBECTL) apply -f package/crds/ -R
 	@$(KUBECTL) apply -f examples/config.yaml
@@ -118,5 +76,5 @@ demo: kind.up  ## Run a demo of this provider
 
 
 .PHONY: help
-help: ## print this help
-	@grep -E '^[a-zA-Z\._-]+:.*?## .*$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $1, $2}'
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' ./Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
