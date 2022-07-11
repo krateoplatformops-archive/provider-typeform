@@ -6,7 +6,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  ORG: krateoplatformops
 
 jobs:
   package:
@@ -20,18 +19,18 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Extract Version
-        id: version_step
+        id: tagger
         run: |
           echo "##[set-output name=version;]v${GITHUB_REF#$"refs/tags/v"}"
           echo "##[set-output name=version_tag;]${GITHUB_REPOSITORY}-controller:v${GITHUB_REF#$"refs/tags/v"}"
 
       - name: Print Version
         run: |
-          echo ${{steps.version_step.outputs.version_tag}}
-          echo ${{steps.version_step.outputs.version}}
+          echo ${{steps.tagger.outputs.version_tag}}
+          echo ${{steps.tagger.outputs.version}}
 
       - name: Replace VERSION in crossplane.yaml
-        run: sed -i 's/VERSION/${{steps.version_step.outputs.version}}/g' package/crossplane.yaml
+        run: sed -i 's/VERSION/${{steps.tagger.outputs.version}}/g' package/crossplane.yaml
       
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -45,21 +44,16 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: PrepareReg Names
-        id: read-docker-image-identifiers
-        run: |
-          echo VERSION_TAG=$(echo ${{ steps.version_step.outputs.version_tag }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-          
+        
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           push: true
           platforms: linux/amd64
-          tags: ${{ env.REGISTRY }}/${{steps.version_step.outputs.version_tag}}
+          tags: ${{ env.REGISTRY }}/${{steps.tagger.outputs.version_tag}}
           build-args: |
-            ${{steps.version_step.outputs.version}}
+            ${{steps.tagger.outputs.version}}
       
       - name: Build xpkg
         uses: crossplane-contrib/xpkg-action@master
@@ -71,4 +65,4 @@ jobs:
       - name: Push xpkg
         uses: crossplane-contrib/xpkg-action@master
         with:
-          command: push provider -f package/${{ github.event.repository.name }}.xpkg ghcr.io/${GITHUB_REPOSITORY}:${{steps.version_step.outputs.version}}
+          command: push provider -f package/${{ github.event.repository.name }}.xpkg ghcr.io/${GITHUB_REPOSITORY}:${{steps.tagger.outputs.version}}
