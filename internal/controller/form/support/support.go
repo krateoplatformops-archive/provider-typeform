@@ -187,37 +187,6 @@ func FromSpecToForm(in *v1alpha1.FormParams) *typeform.Form {
 	return res
 }
 
-/*
-func updateField(in *v1alpha1.Field, src *typeform.Field) {
-	if ref := helpers.StringValue(in.Ref); ref != src.Ref {
-		return
-	}
-
-	src.Type = in.Type
-	src.Title = in.Title
-
-	src.Properties.AllowMultipleSelection = in.Properties.AllowMultipleSelection
-	src.Properties.AllowOtherChoice = in.Properties.AllowOtherChoice
-	src.Properties.AlphabeticalOrder = in.Properties.AlphabeticalOrder
-	src.Properties.Description = in.Properties.Description
-	src.Properties.Steps = in.Properties.Steps
-	src.Properties.Shape = in.Properties.Shape
-	if in.Properties.Choices != nil {
-		src.Properties.Choices = make([]typeform.Choice, len(in.Properties.Choices))
-		for i, it := range in.Properties.Choices {
-			src.Properties.Choices[i] = typeform.Choice{Label: it}
-		}
-	}
-
-	if in.Validations != nil {
-		src.Validations = &typeform.Validations{}
-		src.Validations.MaxLength = in.Validations.MaxLength
-		src.Validations.MaxSelection = in.Validations.MaxSelection
-		src.Validations.MinSelection = in.Validations.MinSelection
-		src.Validations.Required = in.Validations.Required
-	}
-}
-*/
 // GenerateObservation produces FormObservation object from a typeform.Form object.
 func GenerateObservation(src *typeform.Form) v1alpha1.FormObservation {
 	return v1alpha1.FormObservation{
