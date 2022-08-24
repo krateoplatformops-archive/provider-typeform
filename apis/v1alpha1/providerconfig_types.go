@@ -24,10 +24,6 @@ type ProviderConfigSpec struct {
 	// +optional
 	Verbose *bool `json:"verbose,omitempty"`
 
-	// logServiceUrl: Krateo UI Log Service URL
-	// +optional
-	LogServiceUrl *string `json:"logServiceUrl,omitempty"`
-
 	// Credentials required to authenticate to this provider.
 	Credentials ProviderCredentials `json:"credentials"`
 }

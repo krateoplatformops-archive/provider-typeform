@@ -2,8 +2,9 @@ package form
 
 import (
 	"context"
-	"fmt"
 	"strings"
+
+	corev1 "k8s.io/api/core/v1"
 
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/pkg/controller"
@@ -15,6 +16,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/pkg/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -22,7 +24,6 @@ import (
 	tfc "github.com/krateoplatformops/provider-typeform/internal/clients/config"
 	"github.com/krateoplatformops/provider-typeform/internal/clients/typeform"
 	"github.com/krateoplatformops/provider-typeform/internal/controller/form/support"
-	"github.com/krateoplatformops/provider-typeform/internal/notifications"
 )
 
 const (
@@ -38,8 +39,6 @@ const (
 	reasonDeleted      = "DeletedForm"
 	reasonCannotDelete = "CannotDeleteForm"
 
-	serviceName = "provider-typeform"
-
 	annotationKeyFormID = "krateo.io/typeform-id"
 )
 
@@ -53,16 +52,18 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 
 	log := o.Logger.WithValues("controller", name)
 
+	recorder := mgr.GetEventRecorderFor(name)
+
 	r := managed.NewReconciler(mgr,
 		resource.ManagedKind(v1alpha1.FormGroupVersionKind),
 		managed.WithExternalConnecter(&connector{
-			kube:       mgr.GetClient(),
-			log:        log,
-			notifierFn: notifications.NewNotifier,
-			clientFn:   typeform.NewClient,
+			kube:     mgr.GetClient(),
+			log:      log,
+			rec:      recorder,
+			clientFn: typeform.NewClient,
 		}),
 		managed.WithLogger(log),
-		managed.WithRecorder(event.NewAPIRecorder(mgr.GetEventRecorderFor(name))),
+		managed.WithRecorder(event.NewAPIRecorder(recorder)),
 		managed.WithConnectionPublishers(cps...))
 
 	return ctrl.NewControllerManagedBy(mgr).
@@ -75,10 +76,10 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 // A connector is expected to produce an ExternalClient
 // when its Connect method is called.
 type connector struct {
-	kube       client.Client
-	log        logging.Logger
-	notifierFn func(string) *notifications.Notifier
-	clientFn   func(opts typeform.ClientOpts) typeform.Client
+	kube     client.Client
+	log      logging.Logger
+	rec      record.EventRecorder
+	clientFn func(opts typeform.ClientOpts) typeform.Client
 }
 
 // Connect typically produces an ExternalClient by:
@@ -93,18 +94,18 @@ func (c *connector) Connect(ctx context.Context, mg resource.Managed) (managed.E
 	}
 
 	return &external{
-		client:   c.clientFn(opts.ClientOpts),
-		log:      c.log,
-		notifier: c.notifierFn(opts.LogServiceUrl),
+		client: c.clientFn(opts.ClientOpts),
+		log:    c.log,
+		rec:    c.rec,
 	}, nil
 }
 
 // An ExternalClient observes, then either creates, updates, or deletes an
 // external resource to ensure it reflects the managed resource's desired state.
 type external struct {
-	client   typeform.Client
-	log      logging.Logger
-	notifier *notifications.Notifier
+	client typeform.Client
+	log    logging.Logger
+	rec    record.EventRecorder
 }
 
 func (e *external) Observe(ctx context.Context, mg resource.Managed) (managed.ExternalObservation, error) {
@@ -172,26 +173,12 @@ func (e *external) Create(ctx context.Context, mg resource.Managed) (managed.Ext
 	val := support.FromSpecToForm(spec)
 	res, err := e.client.CreateForm(ctx, val)
 	if err != nil {
-		support.Notify(e.log, e.notifier, notifications.Error(
-			notifications.Opts{
-				ServiceName:  serviceName,
-				DeploymentId: deploymentId,
-				Reason:       reasonCannotCreate,
-				Message:      err.Error(),
-			}))
-
 		return managed.ExternalCreation{}, err
 	}
 
 	e.log.Info("Form successfully created", "id", res.ID, "deploymentId", deploymentId)
-
-	support.Notify(e.log, e.notifier, notifications.Info(
-		notifications.Opts{
-			ServiceName:  serviceName,
-			DeploymentId: deploymentId,
-			Reason:       reasonCreated,
-			Message:      fmt.Sprintf("Form created successfully (id: %s, displayUrl: %s)", res.ID, res.Links.Display),
-		}))
+	e.rec.Eventf(cr, corev1.EventTypeNormal, reasonCreated,
+		"Form created successfully (id: %s, displayUrl: %s)", res.ID, res.Links.Display)
 
 	meta.SetExternalName(cr, res.ID)
 
@@ -212,11 +199,13 @@ func (e *external) Update(ctx context.Context, mg resource.Managed) (managed.Ext
 	desired.ID = formID
 
 	err := e.client.UpdateForm(ctx, desired)
-	if err != nil {
-		return managed.ExternalUpdate{}, err
+	if err == nil {
+		e.rec.Eventf(cr, corev1.EventTypeNormal, reasonUpdated,
+			"Form updated successfully (id: %s)", formID)
+		return managed.ExternalUpdate{}, nil
 	}
 
-	return managed.ExternalUpdate{}, nil
+	return managed.ExternalUpdate{}, err
 }
 
 func (e *external) Delete(ctx context.Context, mg resource.Managed) error {
@@ -235,24 +224,13 @@ func (e *external) Delete(ctx context.Context, mg resource.Managed) error {
 
 	err := e.client.DeleteForm(ctx, formID)
 	if err != nil {
-		support.Notify(e.log, e.notifier, notifications.Error(
-			notifications.Opts{
-				ServiceName:  serviceName,
-				DeploymentId: deploymentId,
-				Reason:       reasonCannotDelete,
-				Message:      err.Error(),
-			}))
-
+		e.rec.Eventf(cr, corev1.EventTypeWarning, reasonCannotDelete,
+			"Unable to delete form (id: %s)", formID)
 		return err
 	}
 
-	support.Notify(e.log, e.notifier, notifications.Info(
-		notifications.Opts{
-			ServiceName:  serviceName,
-			DeploymentId: deploymentId,
-			Reason:       reasonDeleted,
-			Message:      fmt.Sprintf("Form successfully deleted (id: %s) ", formID),
-		}))
+	e.rec.Eventf(cr, corev1.EventTypeNormal, reasonUpdated,
+		"Form successfully deleted (id: %s)", formID)
 
 	return err
 }

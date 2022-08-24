@@ -92,11 +92,6 @@ func (in *ProviderConfigSpec) DeepCopyInto(out *ProviderConfigSpec) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.LogServiceUrl != nil {
-		in, out := &in.LogServiceUrl, &out.LogServiceUrl
-		*out = new(string)
-		**out = **in
-	}
 	in.Credentials.DeepCopyInto(&out.Credentials)
 }
 

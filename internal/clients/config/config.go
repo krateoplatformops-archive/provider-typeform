@@ -24,7 +24,6 @@ const (
 
 type Config struct {
 	typeform.ClientOpts
-	LogServiceUrl string
 }
 
 // GetConfig to produce a compute instance service clients options.
@@ -57,7 +56,7 @@ func GetConfig(ctx context.Context, crc client.Client, mg resource.Managed) (*Co
 		opts.HTTPClient = clients.TracerHTTPClient()
 	}
 
-	return &Config{opts, helpers.StringValue(pc.Spec.LogServiceUrl)}, nil
+	return &Config{opts}, nil
 }
 
 // getTypeFormApiToken returns the typeform API personal access token stored in a secret.

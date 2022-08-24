@@ -3,7 +3,6 @@ kind: ProviderConfig
 metadata:
   name: provider-typeform-config
 spec:
-  #logServiceUrl: http://deployment.krateoplatformops.io/
   verbose: false
   credentials:
     source: Secret

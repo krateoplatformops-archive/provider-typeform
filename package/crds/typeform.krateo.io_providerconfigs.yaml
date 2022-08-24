@@ -99,9 +99,6 @@ spec:
                 required:
                 - source
                 type: object
-              logServiceUrl:
-                description: 'logServiceUrl: Krateo UI Log Service URL'
-                type: string
               verbose:
                 description: 'Verbose is useful while debugging (default: false)'
                 type: boolean
